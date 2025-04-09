@@ -29,6 +29,10 @@ class Article
     #[ORM\Column]
     private ?bool $visible = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Country $country = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class Article
     public function setVisible(bool $visible): static
     {
         $this->visible = $visible;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }
