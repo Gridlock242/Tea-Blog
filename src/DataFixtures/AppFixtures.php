@@ -15,12 +15,14 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $countries = [];
+        $countryMap = [];
 
         foreach (self::COUNTRY_NAMES as $countryName) {
             $country = new Country();
             $country->setName($countryName);
             $manager->persist($country);
             $countries[] = $country;
+            $countryMap[$countryName] = $country;
         }
 
         $articlesData =  [
@@ -28,8 +30,9 @@ class AppFixtures extends Fixture
                 'title' => 'Le Dragon Well (Longjing)',
                 'description' => 'Découverte du thé le plus apprécié de Chine.',
                 'content' => 'Le type de thé vert chinois le plus apprécié et le plus connu est le thé Dragon Well (Longjing)...',
-                'dateCreated' => new \DateTime('20 25-04-01'),
+                'dateCreated' => new \DateTime('2025-04-01'),
                 'visible' => true,
+                'countryName' => 'China',
             ],
             [
                 'title' => 'Le matcha japonais',
@@ -37,6 +40,7 @@ class AppFixtures extends Fixture
                 'content' => 'Le matcha est bien plus qu\'une simple poudre verte...',
                 'dateCreated' => new \DateTime('2025-05-12'),
                 'visible' => true,
+                'countryName' => 'Japan'
             ],
             [
                 'title' => 'Thé du tsar',
@@ -44,6 +48,7 @@ class AppFixtures extends Fixture
                 'content' => 'Le thé est profondément ancré dans la culture russe, souvent partagé en famille...',
                 'dateCreated' => new \DateTime('2024-06-12'),
                 'visible' => true,
+                'countryName' => 'Russia',
             ],
             [
                 'title' => 'Süütei tsai',
@@ -51,6 +56,7 @@ class AppFixtures extends Fixture
                 'content' => 'Peu connue pour son thé, la Mongolie réserve pourtant des surprises, ce thé salé au lait de jument...',
                 'dateCreated' => new \DateTime('2024-06-20'),
                 'visible' => true,
+                'countryName' => 'Mongolia',
             ],
             [
                 'title' => 'Thé noir orthodoxe',
@@ -58,6 +64,7 @@ class AppFixtures extends Fixture
                 'content' => 'La Malaisie mêle traditions chinoises, indiennes et malaises dans sa culture du thé...',
                 'dateCreated' => new \DateTime('2024-06-20'),
                 'visible' => false,
+                'countryName' => 'Malaysia',
             ],
         ];
 
@@ -68,8 +75,9 @@ class AppFixtures extends Fixture
         $article->setContent($articleData['content']);
         $article->setDateCreated($articleData['dateCreated']);
         $article->setVisible(true);
-        $article->setCountry($articleData['country']);
 
+        //Association de l'article avec l'objet Country
+        $article->setCountry($countryMap[$articleData['countryName']]);
 
         $manager->persist($article);
     }
